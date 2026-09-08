@@ -115,7 +115,9 @@ Quick sanity check that it runs:
 npm start
 ```
 
-Visit `http://YOUR_VPS_IP:3000` in a browser — you should see the profile-select screen. Press `Ctrl+C` to stop it; we'll run it properly with a process manager next.
+Visit `http://YOUR_VPS_IP:3141` in a browser — you should see the profile-select screen. Press `Ctrl+C` to stop it; we'll run it properly with a process manager next.
+
+(This project's `ecosystem.config.js` runs the app on port `3141` rather than Next's default `3000` — every command and config below already matches that.)
 
 ---
 
@@ -151,40 +153,20 @@ pm2 restart nikahfix     # restart after a change
 
 ## 7. Put Nginx in front of it (reverse proxy)
 
-Running Next.js directly on port 3000 works, but you want port 80/443 (standard web ports) pointing at it, plus room to add HTTPS. Install Nginx:
+Running Next.js directly on port 3141 works, but you want port 80/443 (standard web ports) pointing at it, plus room to add HTTPS. Install Nginx:
 
 ```bash
 sudo apt install -y nginx
 ```
 
-Create a site config:
+This repo already includes a ready-made config at [`nikahfix.nginx.conf`](nikahfix.nginx.conf), pointed at port `3141`. Install it:
 
 ```bash
-sudo nano /etc/nginx/sites-available/nikahfix
+sudo cp ~/nikahfix/nikahfix.nginx.conf /etc/nginx/sites-available/nikahfix
+sudo nano /etc/nginx/sites-available/nikahfix   # replace yourdomain.com with your real domain (or the VPS IP)
 ```
 
-Paste this in (replace `yourdomain.com` with your actual domain, or the VPS IP if you're not using one yet):
-
-```nginx
-server {
-    listen 80;
-    server_name yourdomain.com www.yourdomain.com;
-
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
-Save (`Ctrl+O`, Enter, `Ctrl+X` in nano), then enable it:
+Then enable it:
 
 ```bash
 sudo ln -s /etc/nginx/sites-available/nikahfix /etc/nginx/sites-enabled/
@@ -265,6 +247,6 @@ This app stores RSVPs and Guest Book messages as JSON files under `data/` on the
 
 **Changes to `lib/content.ts` don't show up** — you need to rebuild: `npm run build && pm2 restart nikahfix`. Editing files alone doesn't recompile the production build (that's only automatic in `npm run dev`, which you shouldn't use in production).
 
-**Port 3000 already in use** — something else is already running there. Check with `sudo lsof -i :3000` and stop the conflicting process, or change the port: edit `PORT: 3000` in `ecosystem.config.js` to e.g. `3001`, run `pm2 restart nikahfix`, and update the Nginx `proxy_pass` line to match.
+**Port 3141 already in use** — something else is already running there. Check with `sudo lsof -i :3141` and stop the conflicting process, or change the port: edit `PORT: 3141` in `ecosystem.config.js` to something else, run `pm2 restart nikahfix`, and update the `proxy_pass` line in `nikahfix.nginx.conf` (and the copy in `/etc/nginx/sites-available/nikahfix`) to match.
 
 **Certbot fails with a DNS/challenge error** — your domain's A record probably hasn't propagated yet. Wait a bit and retest with `dig yourdomain.com` — it should return your VPS's IP.

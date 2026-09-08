@@ -48,9 +48,9 @@ export const weddingConfig = {
   tag: "NIKAHFIX ORIGINAL",
 
   // The couple
-  groomName: "Genos",
-  brideName: "Andini",
-  coupleTitle: "GENOS & ANDINI",
+  groomName: "Sapi",
+  brideName: "Kambing",
+  coupleTitle: "SAPI & KAMBING",
 
   // Hero
   heroImage: "/images/hero.jpg",
@@ -75,9 +75,9 @@ export const weddingConfig = {
     time: "09:00 WIB",
     startISO: "2026-12-20T09:00:00+07:00",
     endISO: "2026-12-20T10:30:00+07:00",
-    venueName: "Grand Ballroom, Hotel Mulia",
-    venueAddress: "Jl. Asia Afrika No. 8, Senayan, Jakarta Selatan",
-    mapsUrl: "https://maps.google.com/?q=Hotel+Mulia+Senayan+Jakarta",
+    venueName: "Gedung Graha Sabha Wiratama (GSW) Jatiroto",
+    venueAddress: "Jl. Sapi No.99, Jatiroto, Lumajang",
+    mapsUrl: "https://maps.app.goo.gl/yGCsYkrDkxGeXkfL8",
   },
   reception: {
     label: "RECEPTION",
@@ -85,9 +85,9 @@ export const weddingConfig = {
     time: "11:00 WIB",
     startISO: "2026-12-20T11:00:00+07:00",
     endISO: "2026-12-20T14:00:00+07:00",
-    venueName: "Grand Ballroom, Hotel Mulia",
-    venueAddress: "Jl. Asia Afrika No. 8, Senayan, Jakarta Selatan",
-    mapsUrl: "https://maps.google.com/?q=Hotel+Mulia+Senayan+Jakarta",
+    venueName: "Gedung Graha Sabha Wiratama (GSW) Jatiroto",
+    venueAddress: "Jl. Sapi No.99, Jatiroto, Lumajang",
+    mapsUrl: "https://maps.app.goo.gl/yGCsYkrDkxGeXkfL8",
   },
 
   // Our Story — Netflix-style episodes
@@ -131,8 +131,8 @@ export const weddingConfig = {
 
   // The Cast
   mainCast: {
-    bride: { name: "Andini", role: "The Bride", image: "/images/bride.jpg" },
-    groom: { name: "Genos", role: "The Groom", image: "/images/groom.jpg" },
+    bride: { name: "Sapi", role: "The Bride", image: "/images/bride.jpg" },
+    groom: { name: "Kambing", role: "The Groom", image: "/images/groom.jpg" },
   },
   specialAppearances: [
     { name: "Bpk. Ahmad", role: "Father of the Bride", image: "/images/cast-1.jpg" },
@@ -145,8 +145,8 @@ export const weddingConfig = {
   // whole section.
   giftNote: "Your presence is the greatest gift. If you'd like to send something more, here's where.",
   giftAccounts: [
-    { owner: "Andini (Bride)", bankName: "BCA", accountNumber: "1234567890", accountHolder: "Andini" },
-    { owner: "Genos (Groom)", bankName: "Mandiri", accountNumber: "0987654321", accountHolder: "Genos" },
+    { owner: "Kambing (Bride)", bankName: "BCA", accountNumber: "1234567890", accountHolder: "Kambing S.A" },
+    { owner: "Sapi (Groom)", bankName: "Mandiri", accountNumber: "0987654321", accountHolder: "Sapi K.S" },
   ] satisfies GiftAccount[],
 
   // Memories / Gallery
