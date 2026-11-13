@@ -54,7 +54,7 @@ export const weddingConfig = {
   coupleTitle: "ARUL & DEVITA",
 
   // Hero
-  heroImage: "/images/hero.jpg",
+  heroImage: "/images/hero.webp",
   heroMeta: "2026 • Romance • Wedding • True Story",
   heroTagline: "Two people. One story. A lifetime to go.",
   heroLogline:
@@ -90,7 +90,7 @@ export const weddingConfig = {
       title: "The First Meeting",
       subtitle: "Pilot",
       year: "2019",
-      image: "/images/episode-1.jpg",
+      image: "/images/episode-1.webp",
       description:
         "A crowded room, an accidental introduction, and a conversation neither of them wanted to end.",
     },
@@ -99,7 +99,7 @@ export const weddingConfig = {
       title: "The Journey",
       subtitle: "Season One",
       year: "2020 — 2024",
-      image: "/images/episode-2.jpg",
+      image: "/images/episode-2.webp",
       description:
         "Long calls, longer distances, and the slow realization that this was the real thing.",
     },
@@ -108,7 +108,7 @@ export const weddingConfig = {
       title: "The Proposal",
       subtitle: "Season Finale",
       year: "2025",
-      image: "/images/episode-3.jpg",
+      image: "/images/episode-3.webp",
       description: "One knee, one question, one very shaky 'yes'.",
     },
     {
@@ -116,7 +116,7 @@ export const weddingConfig = {
       title: "Forever",
       subtitle: "Coming Soon",
       year: "2026",
-      image: "/images/episode-4.jpg",
+      image: "/images/episode-4.webp",
       description:
         "The wedding. The beginning of a story with no ending — just the next chapter.",
     },
@@ -124,8 +124,8 @@ export const weddingConfig = {
 
   // The Cast
   mainCast: {
-    bride: { name: "Devita", fullName: "Devita Irma Fitriani", role: "The Bride", image: "/images/bride.jpg" },
-    groom: { name: "Arul", fullName: "Ammrullah Sukma Jati Lesmana Subekti", role: "The Groom", image: "/images/groom.jpg" },
+    bride: { name: "Devita", fullName: "Devita Irma Fitriani", role: "The Bride", image: "/images/bride.webp" },
+    groom: { name: "Arul", fullName: "Ammrullah Sukma Jati Lesmana Subekti", role: "The Groom", image: "/images/groom.webp" },
   },
   specialAppearances: [] as CastMember[],
 
@@ -139,14 +139,8 @@ export const weddingConfig = {
 
   // Memories / Gallery
   gallery: [
-    { id: "g1", category: "Pre-Wedding", image: "/images/gallery-1.jpg" },
-    { id: "g2", category: "Our Journey", image: "/images/gallery-2.jpg" },
-    { id: "g3", category: "Pre-Wedding", image: "/images/gallery-3.jpg" },
-    { id: "g4", category: "Family", image: "/images/gallery-4.jpg" },
-    { id: "g5", category: "Our Journey", image: "/images/gallery-5.jpg" },
-    { id: "g6", category: "Friends", image: "/images/gallery-6.jpg" },
-    { id: "g7", category: "Pre-Wedding", image: "/images/gallery-7.jpg" },
-    { id: "g8", category: "Family", image: "/images/gallery-8.jpg" },
+    { id: "g1", category: "Our Journey", image: "/images/gallery-1.webp" },
+    { id: "g2", category: "Our Journey", image: "/images/gallery-2.webp" },
   ] satisfies GalleryItem[],
 
   // Guest Book messages are read entirely from data/guestbook.json (real
