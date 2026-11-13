@@ -15,9 +15,20 @@ const body = Inter({
   display: "swap",
 });
 
+// Replace with the real public domain (https, no trailing slash) — WhatsApp
+// needs an absolute image URL, built from this.
+const SITE_URL = "https://aruldevita.binzo.id";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "NIKAHFIX",
   description: "You're invited to the next episode of our love story.",
+  openGraph: {
+    title: "NIKAHFIX",
+    description: "You're invited to the next episode of our love story.",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
 };
 
 export const viewport: Viewport = {
