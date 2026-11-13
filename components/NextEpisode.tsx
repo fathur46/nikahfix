@@ -5,7 +5,7 @@ import Countdown from "./Countdown";
 import { weddingConfig } from "@/lib/content";
 import { googleCalendarUrl } from "@/lib/calendar";
 
-type Event = typeof weddingConfig.ceremony;
+type Event = typeof weddingConfig.reception;
 
 function EventCard({ event }: { event: Event }) {
   return (
@@ -55,7 +55,6 @@ export default function NextEpisode() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <EventCard event={weddingConfig.ceremony} />
           <EventCard event={weddingConfig.reception} />
         </div>
       </motion.div>

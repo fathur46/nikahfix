@@ -26,7 +26,7 @@ coupleTitle: "GENOS & ANDINI",
 weddingDateISO: "2026-12-20T09:00:00+07:00", // drives the countdown
 ```
 
-and the `ceremony` / `reception` objects (date, time, venue name/address, Google Maps link).
+and the `reception` object (date, time, venue name/address, Google Maps link).
 
 ### Add a photo to a section (e.g. Pre-Wedding)
 

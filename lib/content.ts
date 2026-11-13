@@ -15,6 +15,7 @@ export type Episode = {
 
 export type CastMember = {
   name: string;
+  fullName?: string;
   role: string;
   image: string;
 };
@@ -48,9 +49,9 @@ export const weddingConfig = {
   tag: "NIKAHFIX ORIGINAL",
 
   // The couple
-  groomName: "Sapi",
-  brideName: "Kambing",
-  coupleTitle: "SAPI & KAMBING",
+  groomName: "Arul",
+  brideName: "Devita",
+  coupleTitle: "ARUL & DEVITA",
 
   // Hero
   heroImage: "/images/hero.jpg",
@@ -66,28 +67,20 @@ export const weddingConfig = {
   trailerLogline: "The official trailer for the story of us.",
 
   // Wedding date/time (ISO with offset, used for countdown)
-  weddingDateISO: "2026-12-20T09:00:00+07:00",
-  weddingDateLabel: "Saturday, 20 December 2026",
+  weddingDateISO: "2026-11-27T15:00:00+07:00",
+  weddingDateLabel: "Friday, 27 November 2026",
 
-  ceremony: {
-    label: "AKAD NIKAH",
-    date: "Saturday, 20 December 2026",
-    time: "09:00 WIB",
-    startISO: "2026-12-20T09:00:00+07:00",
-    endISO: "2026-12-20T10:30:00+07:00",
-    venueName: "Gedung Graha Sabha Wiratama (GSW) Jatiroto",
-    venueAddress: "Jl. Sapi No.99, Jatiroto, Lumajang",
-    mapsUrl: "https://maps.app.goo.gl/yGCsYkrDkxGeXkfL8",
-  },
   reception: {
     label: "RECEPTION",
-    date: "Saturday, 20 December 2026",
-    time: "11:00 WIB",
-    startISO: "2026-12-20T11:00:00+07:00",
-    endISO: "2026-12-20T14:00:00+07:00",
-    venueName: "Gedung Graha Sabha Wiratama (GSW) Jatiroto",
-    venueAddress: "Jl. Sapi No.99, Jatiroto, Lumajang",
-    mapsUrl: "https://maps.app.goo.gl/yGCsYkrDkxGeXkfL8",
+    date: "Friday, 27 November 2026",
+    time: "15.00 WIB - Selesai",
+    startISO: "2026-11-27T15:00:00+07:00",
+    // shortcut: "selesai" has no fixed end time, so the calendar event assumes 3 hours; edit if needed.
+    endISO: "2026-11-27T18:00:00+07:00",
+    venueName: "Perumahan Plataran Hills No. B 25 - 26",
+    venueAddress:
+      "Jalan Gadingan, Area Sawah/Kebun, Boreng, Kec. Lumajang, Kabupaten Lumajang, Jawa Timur 67351",
+    mapsUrl: "https://maps.app.goo.gl/Rryjumq1cwMybZMc9?g_st=aw",
   },
 
   // Our Story — Netflix-style episodes
@@ -131,22 +124,17 @@ export const weddingConfig = {
 
   // The Cast
   mainCast: {
-    bride: { name: "Sapi", role: "The Bride", image: "/images/bride.jpg" },
-    groom: { name: "Kambing", role: "The Groom", image: "/images/groom.jpg" },
+    bride: { name: "Devita", fullName: "Devita Irma Fitriani", role: "The Bride", image: "/images/bride.jpg" },
+    groom: { name: "Arul", fullName: "Ammrullah Sukma Jati Lesmana Subekti", role: "The Groom", image: "/images/groom.jpg" },
   },
-  specialAppearances: [
-    { name: "Bpk. Ahmad", role: "Father of the Bride", image: "/images/cast-1.jpg" },
-    { name: "Ibu Siti", role: "Mother of the Bride", image: "/images/cast-2.jpg" },
-    { name: "Bpk. Joko", role: "Father of the Groom", image: "/images/cast-3.jpg" },
-    { name: "Ibu Rina", role: "Mother of the Groom", image: "/images/cast-4.jpg" },
-  ] satisfies CastMember[],
+  specialAppearances: [] as CastMember[],
 
   // Send a Gift — bank account details. Leave the array empty to hide the
   // whole section.
   giftNote: "Your presence is the greatest gift. If you'd like to send something more, here's where.",
   giftAccounts: [
-    { owner: "Kambing (Bride)", bankName: "BCA", accountNumber: "1234567890", accountHolder: "Kambing S.A" },
-    { owner: "Sapi (Groom)", bankName: "Mandiri", accountNumber: "0987654321", accountHolder: "Sapi K.S" },
+    { owner: "Groom", bankName: "Mandiri", accountNumber: "1430028903126", accountHolder: "Ammrullah Sukma Jati" },
+    { owner: "Bride", bankName: "BRI", accountNumber: "631801032893531", accountHolder: "Devita Irma Fitriani" },
   ] satisfies GiftAccount[],
 
   // Memories / Gallery

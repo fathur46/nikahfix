@@ -136,6 +136,7 @@ function CastLightbox({
             {index < 2 ? "Main Cast" : "Special Appearance"}
           </p>
           <h3 className="font-display text-4xl text-white">{person.name}</h3>
+          {person.fullName && <p className="mt-1 text-sm text-white/60">{person.fullName}</p>}
           <p className="mt-1 text-sm text-white/70">as {person.role}</p>
         </div>
 

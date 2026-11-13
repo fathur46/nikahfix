@@ -2,10 +2,10 @@
 
 import { weddingConfig } from "@/lib/content";
 
-const roles = [
+const roles: { role: string; value: string; href?: string }[] = [
   { role: "Directed by", value: "Love" },
   { role: "Produced by", value: "Our Families" },
-  { role: "Special Thanks to", value: "FTR" },
+  { role: "Special Thanks to", value: "FTR", href: "https://iniftr.web.id" },
 ];
 
 export default function Credits() {
@@ -21,7 +21,18 @@ export default function Credits() {
         {roles.map((r) => (
           <div key={r.role}>
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">{r.role}</p>
-            <p className="font-display text-lg text-white">{r.value}</p>
+            {r.href ? (
+              <a
+                href={r.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block font-display text-xl tracking-widest text-nk-red underline decoration-nk-red/40 underline-offset-4 transition-colors active:text-white"
+              >
+                {r.value} ↗
+              </a>
+            ) : (
+              <p className="font-display text-lg text-white">{r.value}</p>
+            )}
           </div>
         ))}
       </div>
