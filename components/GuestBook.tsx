@@ -15,6 +15,7 @@ export default function GuestBook({
   // Sourced entirely from data/guestbook.json (real guest submissions) — no
   // hardcoded placeholder messages.
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [name, setName] = useState(guestName);
   const [rating, setRating] = useState(5);
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -32,7 +33,7 @@ export default function GuestBook({
     if (!message.trim()) return;
     setSubmitting(true);
     const entry: Review = {
-      name: guestName,
+      name: name.trim() || guestName,
       message: message.trim(),
       rating,
       ...(attendance ? { attendance } : {}),
@@ -58,7 +59,16 @@ export default function GuestBook({
       <p className="mb-6 text-sm text-nk-mist">Reviews from the people who know us best.</p>
 
       <form onSubmit={handleSubmit} className="mb-8 rounded-lg bg-nk-panel p-4">
-        <p className="mb-2 text-sm text-white/80">Leave a message, {guestName}</p>
+        <label className="mb-1 block text-xs text-nk-mist" htmlFor="guestbook-name">
+          Your name
+        </label>
+        <input
+          id="guestbook-name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          maxLength={60}
+          className="mb-3 w-full rounded border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-nk-red"
+        />
         {attendance && (
           <p className="mb-3 text-xs text-nk-mist">
             This message will be noted with your RSVP: <AttendanceBadge status={attendance} />

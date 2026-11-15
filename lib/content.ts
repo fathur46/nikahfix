@@ -141,6 +141,10 @@ export const weddingConfig = {
   gallery: [
     { id: "g1", category: "Our Journey", image: "/images/gallery-1.webp" },
     { id: "g2", category: "Our Journey", image: "/images/gallery-2.webp" },
+    { id: "g3", category: "Our Journey", image: "/images/gallery-3.webp" },
+    { id: "g4", category: "Our Journey", image: "/images/gallery-4.webp" },
+    { id: "g5", category: "Our Journey", image: "/images/gallery-5.webp" },
+    { id: "g6", category: "Our Journey", image: "/images/gallery-6.webp" },
   ] satisfies GalleryItem[],
 
   // Guest Book messages are read entirely from data/guestbook.json (real
