@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import type { Review } from "@/lib/content";
 
 type Rsvp = { status: "yes" | "maybe" | "no"; name: string };
@@ -27,6 +28,13 @@ export default function GuestBook({
 
   const [refreshing, setRefreshing] = useState(false);
   const [needRsvp, setNeedRsvp] = useState(false);
+  const [toast, setToast] = useState(false);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(false), 4500);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   const load = useCallback(async () => {
     setRefreshing(true);
@@ -50,6 +58,7 @@ export default function GuestBook({
     if (!rsvp) {
       // Message stays in the box; send the guest to the RSVP form first.
       setNeedRsvp(true);
+      setToast(true);
       document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
@@ -185,6 +194,37 @@ export default function GuestBook({
           </div>
         ))}
       </div>
+
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            role="alert"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-x-4 bottom-[calc(1.5rem+var(--inset-bottom))] z-[60] mx-auto flex max-w-sm items-start gap-3 rounded-md border-l-4 border-nk-red bg-[#181818] p-4 shadow-2xl shadow-black/80"
+          >
+            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-nk-red text-sm font-bold text-white">
+              !
+            </span>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-white">Isi RSVP dulu</p>
+              <p className="mt-0.5 text-xs text-nk-mist">
+                Pesan bisa dikirim setelah konfirmasi kehadiran.
+              </p>
+            </div>
+            <button
+              type="button"
+              aria-label="Dismiss"
+              onClick={() => setToast(false)}
+              className="text-xl leading-none text-white/50 active:text-white"
+            >
+              &times;
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
