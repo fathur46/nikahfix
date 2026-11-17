@@ -98,6 +98,12 @@ export default function ProfileGate({
         )}
       </AnimatePresence>
 
+      <p className="absolute bottom-20 flex items-center gap-2 px-6 text-center text-xs text-white/60">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.47 4.47 0 0 0 2.5-4zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+        </svg>
+        Turn volume up for better experience
+      </p>
       <p className="absolute bottom-8 text-[10px] uppercase tracking-[0.3em] text-white/25">
         {weddingConfig.brand}
       </p>

@@ -7,6 +7,7 @@ import { weddingConfig } from "@/lib/content";
 
 export default function TopNav({ guestName }: { guestName: string }) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -28,7 +29,13 @@ export default function TopNav({ guestName }: { guestName: string }) {
       >
         {weddingConfig.brand}
       </motion.span>
-      <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/15">
+      <button
+        type="button"
+        onClick={() => setMenuOpen((o) => !o)}
+        aria-label="Profile menu"
+        aria-expanded={menuOpen}
+        className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/15 active:scale-95 transition-transform"
+      >
         <MediaFrame
           src="/images/profile.jpg"
           alt={guestName}
@@ -36,7 +43,30 @@ export default function TopNav({ guestName }: { guestName: string }) {
           className="h-full w-full"
           imgClassName="h-full w-full object-cover"
         />
-      </span>
+      </button>
+
+      {menuOpen && (
+        <>
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+            className="fixed inset-0 -z-10 cursor-default"
+          />
+          <div className="absolute right-4 top-full w-52 rounded-lg border border-white/10 bg-nk-panel p-3 shadow-xl shadow-black/60">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-nk-mist">Watching as</p>
+            <p className="mb-3 truncate font-display text-xl text-white">{guestName}</p>
+            {/* Reload the personalized /to/<name> URL: back to the profile screen with the name kept (also stops trailer audio). */}
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="w-full rounded bg-nk-red py-2 text-sm font-bold text-white active:scale-[0.98] transition-transform"
+            >
+              Logout
+            </button>
+          </div>
+        </>
+      )}
     </header>
   );
 }

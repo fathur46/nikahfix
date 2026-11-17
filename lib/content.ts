@@ -34,6 +34,8 @@ export type Review = {
   rating: number; // 1-5
   /** Set when the guest also RSVP'd in the same visit — shown as a small badge. */
   attendance?: "yes" | "maybe" | "no";
+  /** ISO timestamp set by the server (or the browser for a just-posted message). */
+  submittedAt?: string;
 };
 
 export type GiftAccount = {

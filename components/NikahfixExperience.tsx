@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ProfileGate from "./ProfileGate";
 import BrandIntro from "./BrandIntro";
 import TopNav from "./TopNav";
@@ -20,13 +20,35 @@ import { slugifyName } from "@/lib/slug";
 type Phase = "gate" | "intro" | "app";
 
 type AttendanceStatus = "yes" | "maybe" | "no";
+type Rsvp = { status: AttendanceStatus; name: string };
 
 export default function NikahfixExperience({ initialName }: { initialName?: string }) {
   const [phase, setPhase] = useState<Phase>("gate");
   const [guestName, setGuestName] = useState<string | null>(initialName ?? null);
-  // Set once the guest RSVPs in this visit, so a Guest Book message they
-  // leave afterwards can carry a "confirmed attendance" note.
-  const [attendance, setAttendance] = useState<AttendanceStatus | null>(null);
+  // The guest's RSVP (status + the name it was filed under). A Guest Book
+  // message is only allowed once this exists, and renames it with the message.
+  const [rsvp, setRsvpState] = useState<Rsvp | null>(null);
+  // Name edited in the message form; overrides the invitation-link name everywhere below.
+  const [msgName, setMsgName] = useState<string | null>(null);
+  const rsvpKey = `nikahfix-rsvp:${guestName ?? ""}`;
+
+  // Remember the RSVP on this device so a returning guest is not asked again.
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(rsvpKey) ?? "null");
+      if (saved?.status && saved?.name) {
+        setRsvpState(saved);
+        setMsgName(saved.name);
+      }
+    } catch {}
+  }, [rsvpKey]);
+
+  const saveRsvp = (r: Rsvp) => {
+    setRsvpState(r);
+    try {
+      localStorage.setItem(rsvpKey, JSON.stringify(r));
+    } catch {}
+  };
 
   const handleEnter = useCallback(
     (name: string) => {
@@ -57,19 +79,26 @@ export default function NikahfixExperience({ initialName }: { initialName?: stri
     return <BrandIntro onDone={() => setPhase("app")} />;
   }
 
-  const name = guestName ?? "Guest";
+  const linkName = guestName ?? "Guest";
+  const name = msgName ?? linkName;
+  const rsvpName = name.trim() || linkName;
 
   return (
     <main className="relative min-h-screen w-full bg-black">
-      <TopNav guestName={name} />
-      <Hero guestName={name} />
+      <TopNav guestName={linkName} />
+      <Hero guestName={linkName} />
       <Trailer />
       <OurStory />
       <Cast />
       <NextEpisode />
       <Memories />
-      <RSVP guestName={name} onStatusChange={setAttendance} />
-      <GuestBook guestName={name} attendance={attendance} />
+      <RSVP guestName={rsvpName} onStatusChange={(status) => saveRsvp({ status, name: rsvpName })} />
+      <GuestBook
+        name={name}
+        onNameChange={setMsgName}
+        rsvp={rsvp}
+        onRsvpRenamed={(n) => rsvp && saveRsvp({ ...rsvp, name: n })}
+      />
       <Location />
       <GiftSection />
       <Credits />

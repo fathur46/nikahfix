@@ -1,42 +1,79 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import type { Review } from "@/lib/content";
 
-type Attendance = "yes" | "maybe" | "no" | null;
+type Rsvp = { status: "yes" | "maybe" | "no"; name: string };
 
 export default function GuestBook({
-  guestName,
-  attendance,
+  name,
+  onNameChange,
+  rsvp,
+  onRsvpRenamed,
 }: {
-  guestName: string;
-  attendance?: Attendance;
+  name: string;
+  onNameChange: (name: string) => void;
+  rsvp: Rsvp | null;
+  onRsvpRenamed: (name: string) => void;
 }) {
+  const attendance = rsvp?.status ?? null;
   // Sourced entirely from data/guestbook.json (real guest submissions) — no
   // hardcoded placeholder messages.
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [name, setName] = useState(guestName);
   const [rating, setRating] = useState(5);
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [posted, setPosted] = useState(false);
 
-  useEffect(() => {
-    fetch("/api/guestbook")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => setReviews(data?.reviews ?? []))
-      .catch(() => {});
+  const [refreshing, setRefreshing] = useState(false);
+  const [needRsvp, setNeedRsvp] = useState(false);
+
+  const load = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const r = await fetch("/api/guestbook", { cache: "no-store" });
+      const data = r.ok ? await r.json() : null;
+      if (data) setReviews(data.reviews ?? []);
+    } catch {
+      // Keep whatever is already on screen.
+    }
+    setRefreshing(false);
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!message.trim()) return;
+    if (!rsvp) {
+      // Message stays in the box; send the guest to the RSVP form first.
+      setNeedRsvp(true);
+      document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     setSubmitting(true);
+    const finalName = name.trim() || rsvp.name;
+    // RSVP follows the message name: rename the filed RSVP when the name was edited.
+    if (finalName !== rsvp.name) {
+      try {
+        await fetch("/api/rsvp", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ from: rsvp.name, to: finalName }),
+        });
+        onRsvpRenamed(finalName);
+      } catch {
+        // Offline: keep the old RSVP name; the message below still posts.
+      }
+    }
     const entry: Review = {
-      name: name.trim() || guestName,
+      name: finalName,
       message: message.trim(),
       rating,
-      ...(attendance ? { attendance } : {}),
+      attendance: rsvp.status,
+      submittedAt: new Date().toISOString(),
     };
     try {
       await fetch("/api/guestbook", {
@@ -65,10 +102,15 @@ export default function GuestBook({
         <input
           id="guestbook-name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => onNameChange(e.target.value)}
           maxLength={60}
           className="mb-3 w-full rounded border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-nk-red"
         />
+        {!attendance && needRsvp && (
+          <p className="mb-3 rounded bg-nk-red/15 px-3 py-2 text-xs text-white">
+            Please confirm your RSVP first, then come back and post your message. Your text is saved here.
+          </p>
+        )}
         {attendance && (
           <p className="mb-3 text-xs text-nk-mist">
             This message will be noted with your RSVP: <AttendanceBadge status={attendance} />
@@ -99,6 +141,18 @@ export default function GuestBook({
         {posted && <p className="mt-2 text-center text-xs text-nk-mist">Thanks for the review!</p>}
       </form>
 
+      <div className="mb-3 flex items-center justify-between">
+        <p className="text-sm font-semibold text-white">Messages ({reviews.length})</p>
+        <button
+          type="button"
+          onClick={load}
+          disabled={refreshing}
+          className="rounded bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/80 disabled:opacity-50 active:bg-white/20"
+        >
+          {refreshing ? "Loading..." : "↻ Refresh"}
+        </button>
+      </div>
+
       <div className="flex flex-col gap-3">
         {reviews.map((r, i) => (
           <div key={i} className="rounded-lg bg-nk-panel/60 p-4">
@@ -117,6 +171,17 @@ export default function GuestBook({
             </div>
             {r.relation && <p className="mb-1 text-[11px] uppercase tracking-wider text-nk-mist">{r.relation}</p>}
             <p className="text-sm text-white/80">{r.message}</p>
+            {r.submittedAt && (
+              <p className="mt-2 text-[11px] text-white/40">
+                {new Date(r.submittedAt).toLocaleString("id-ID", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+            )}
           </div>
         ))}
       </div>

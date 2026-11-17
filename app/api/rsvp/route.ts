@@ -35,6 +35,18 @@ export async function GET() {
   return NextResponse.json({ confirmedGuests });
 }
 
+// Rename a guest's RSVP (used when they edit their name while posting a message).
+export async function PUT(req: NextRequest) {
+  const { from, to } = (await req.json().catch(() => null)) ?? {};
+  if (typeof from !== "string" || typeof to !== "string" || !to.trim()) {
+    return NextResponse.json({ error: "Invalid rename payload" }, { status: 400 });
+  }
+  const entries = await readEntries();
+  for (const e of entries) if (e.name === from) e.name = to.trim().slice(0, 60);
+  await fs.writeFile(DATA_FILE, JSON.stringify(entries, null, 2));
+  return NextResponse.json({ ok: true });
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   const { name, status, guestCount } = body ?? {};

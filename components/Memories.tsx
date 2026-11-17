@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import MediaFrame from "./MediaFrame";
 import { weddingConfig, type GalleryItem } from "@/lib/content";
@@ -35,7 +35,7 @@ export default function Memories() {
         {categories.map(({ category, items: rowItems }) => (
           <div key={category}>
             <p className="mb-3 px-5 text-sm font-semibold text-white">{category}</p>
-            <div className="edge-fade flex gap-3 overflow-x-auto px-5 hide-scrollbar">
+            <ScrollRow>
               {rowItems.map((item) => {
                 const globalIndex = items.findIndex((i) => i.id === item.id);
                 return (
@@ -54,7 +54,7 @@ export default function Memories() {
                   </button>
                 );
               })}
-            </div>
+            </ScrollRow>
           </div>
         ))}
       </div>
@@ -70,6 +70,52 @@ export default function Memories() {
         )}
       </AnimatePresence>
     </section>
+  );
+}
+
+/** Horizontal photo row with faint left/right buttons while it can still scroll that way. */
+function ScrollRow({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [more, setMore] = useState(false);
+  const [less, setLess] = useState(false);
+
+  const update = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    setMore(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
+    setLess(el.scrollLeft > 8);
+  }, []);
+
+  useEffect(() => {
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [update]);
+
+  const scroll = (dir: 1 | -1) =>
+    ref.current?.scrollBy({ left: dir * ref.current.clientWidth * 0.7, behavior: "smooth" });
+
+  return (
+    <div className="relative">
+      <div ref={ref} onScroll={update} className="edge-fade flex gap-3 overflow-x-auto px-5 hide-scrollbar">
+        {children}
+      </div>
+      {less && <ScrollButton side="left" onClick={() => scroll(-1)} />}
+      {more && <ScrollButton side="right" onClick={() => scroll(1)} />}
+    </div>
+  );
+}
+
+function ScrollButton({ side, onClick }: { side: "left" | "right"; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label={side === "left" ? "Scroll left" : "Scroll right"}
+      onClick={onClick}
+      className={`absolute ${side === "left" ? "left-2" : "right-2"} top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-2xl leading-none text-white/80 backdrop-blur-sm active:bg-black/60`}
+    >
+      {side === "left" ? <>&#8249;</> : <>&#8250;</>}
+    </button>
   );
 }
 
