@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
 import "./globals.css";
+import { weddingConfig } from "@/lib/content";
 
 const display = Bebas_Neue({
   weight: "400",
@@ -19,13 +20,18 @@ const body = Inter({
 // needs an absolute image URL, built from this.
 const SITE_URL = "https://aruldevita.binzo.id";
 
+const { groomName, brideName, reception } = weddingConfig;
+const names = `${groomName} & ${brideName}`;
+const description = `You're invited to the next episode of our love story. ${reception.date} · ${reception.time}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "NIKAHFIX",
-  description: "You're invited to the next episode of our love story.",
+  title: `NIKAHFIX — ${names}`,
+  description,
   openGraph: {
-    title: "NIKAHFIX",
-    description: "You're invited to the next episode of our love story.",
+    title: names,
+    description,
+    siteName: "NIKAHFIX",
     type: "website",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
