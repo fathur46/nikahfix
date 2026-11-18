@@ -82,7 +82,7 @@ export const weddingConfig = {
     venueName: "Perumahan Plataran Hills No. B 25 - 26",
     venueAddress:
       "Jalan Gadingan, Area Sawah/Kebun, Boreng, Kec. Lumajang, Kabupaten Lumajang, Jawa Timur 67351",
-    mapsUrl: "https://maps.app.goo.gl/Rryjumq1cwMybZMc9?g_st=aw",
+    mapsUrl: "https://maps.app.goo.gl/D8t9TdWSLZXPsqje6",
   },
 
   // Our Story — Netflix-style episodes
@@ -91,7 +91,7 @@ export const weddingConfig = {
       number: "01",
       title: "The First Meeting",
       subtitle: "Pilot",
-      year: "2019",
+      year: "2017",
       image: "/images/episode-1.webp",
       description:
         "A crowded room, an accidental introduction, and a conversation neither of them wanted to end.",
@@ -100,7 +100,7 @@ export const weddingConfig = {
       number: "02",
       title: "The Journey",
       subtitle: "Season One",
-      year: "2020 — 2024",
+      year: "2018 — 2024",
       image: "/images/episode-2.webp",
       description:
         "Long calls, longer distances, and the slow realization that this was the real thing.",
