@@ -162,7 +162,7 @@ export default function GuestBook({
         </button>
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex max-h-[80vh] flex-col gap-3 overflow-y-auto overscroll-contain">
         {reviews.map((r, i) => (
           <div key={i} className="rounded-lg bg-nk-panel/60 p-4">
             <div className="mb-1 flex items-center justify-between gap-2">
