@@ -2,13 +2,14 @@
 
 import { motion } from "framer-motion";
 import MediaFrame from "./MediaFrame";
-import { weddingConfig } from "@/lib/content";
+import { useI18n } from "@/lib/i18n";
 
 function scrollTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 export default function Hero({ guestName }: { guestName: string }) {
+  const { t, c: weddingConfig } = useI18n();
   return (
     <section className="relative flex h-[100svh] w-full flex-col justify-end overflow-hidden">
       <MediaFrame
@@ -43,7 +44,7 @@ export default function Hero({ guestName }: { guestName: string }) {
         <p className="mt-1 max-w-sm text-sm text-nk-mist">{weddingConfig.heroLogline}</p>
 
         <p className="mt-4 text-sm text-white/70">
-          Welcome, <span className="text-white">{guestName}</span>.
+          {t("welcome")} <span className="text-white">{guestName}</span>.
         </p>
 
         <div className="mt-5 flex items-center gap-3">
@@ -51,13 +52,13 @@ export default function Hero({ guestName }: { guestName: string }) {
             onClick={() => scrollTo("trailer")}
             className="flex items-center gap-2 rounded bg-white px-5 py-2.5 text-sm font-bold text-black active:scale-[0.97] transition-transform"
           >
-            <PlayIcon /> Play Trailer
+            <PlayIcon /> {t("playTrailer")}
           </button>
           <button
             onClick={() => scrollTo("story")}
             className="flex items-center gap-2 rounded bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm active:scale-[0.97] transition-transform"
           >
-            <InfoIcon /> Our Story
+            <InfoIcon /> {t("ourStory")}
           </button>
         </div>
       </motion.div>

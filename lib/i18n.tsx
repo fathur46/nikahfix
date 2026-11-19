@@ -1,0 +1,237 @@
+"use client";
+
+import { createContext, useContext } from "react";
+import { weddingConfig, contentId } from "@/lib/content";
+
+export type Lang = "en" | "id";
+
+const en = {
+  // Profile gate
+  whatsYourName: "What's your name?",
+  soWeKnow: "So we know who's watching.",
+  yourNamePlaceholder: "Your name",
+  continue: "Continue",
+  whosWatching: "Who's Watching?",
+  clickHere: "↓ Click here",
+  volumeHint: "Turn volume up for better experience",
+  // Top nav
+  watchingAs: "Watching as",
+  logout: "Logout",
+  profileMenu: "Profile menu",
+  // Hero
+  welcome: "Welcome,",
+  playTrailer: "Play Trailer",
+  ourStory: "Our Story",
+  // Trailer
+  muted: "Muted",
+  soundOn: "Sound On",
+  unmuteTrailer: "Unmute trailer",
+  muteTrailer: "Mute trailer",
+  trailerSoon: "Trailer coming soon",
+  // Our story
+  episodes: "{n} Episodes",
+  // Cast
+  theCast: "The Cast",
+  mainCast: "Main Cast",
+  specialAppearances: "Special Appearances",
+  specialAppearance: "Special Appearance",
+  as: "as",
+  castCounter: "CAST {i} / {n}",
+  close: "Close",
+  previous: "Previous",
+  next: "Next",
+  // Next episode / countdown
+  nextEpisode: "The Next Episode",
+  theWedding: "The Wedding",
+  openMaps: "Open Maps",
+  addToCalendar: "Add to Calendar",
+  nowStreaming: "NOW STREAMING",
+  comingSoon: "Coming Soon",
+  days: "Days",
+  hours: "Hours",
+  min: "Min",
+  sec: "Sec",
+  // Memories
+  memories: "Memories",
+  watchAgain: "Watch Again",
+  scrollLeft: "Scroll left",
+  scrollRight: "Scroll right",
+  // RSVP
+  areYouWatching: "Are You Watching?",
+  rsvpIntro: "We'd love to have you with us on this special day.",
+  rsvpAs: "RSVP as",
+  optYes: "YES, I'LL BE THERE",
+  optMaybe: "MAYBE",
+  optNo: "SORRY, I CAN'T MAKE IT",
+  numberOfGuests: "Number of guests",
+  confirmRsvp: "Confirm RSVP",
+  sending: "Sending...",
+  onTheList: "You're on the list",
+  rsvpThanks: "Thanks, {name}. We'll see you at the premiere.",
+  confirmedGuests: "Confirmed Guests",
+  peopleWillBeThere: "people will be there",
+  // Guest book
+  whatPeopleSay: "What People Are Saying",
+  reviewsIntro: "Reviews from the people who know us best.",
+  yourName: "Your name",
+  needRsvpNote: "Please confirm your RSVP first, then come back and post your message. Your text is saved here.",
+  notedWithRsvp: "This message will be noted with your RSVP:",
+  wishesPlaceholder: "Share your wishes...",
+  postMessage: "Post Message",
+  posting: "Posting...",
+  thanksReview: "Thanks for the review!",
+  messages: "Messages ({n})",
+  refresh: "↻ Refresh",
+  loading: "Loading...",
+  attending: "Attending",
+  maybe: "Maybe",
+  cantAttend: "Can't Attend",
+  toastTitle: "RSVP first",
+  toastBody: "Messages can be sent after you confirm attendance.",
+  dismiss: "Dismiss",
+  dateLocale: "en-GB",
+  // Location
+  whereToWatch: "Where to Watch",
+  venueMap: "Venue map",
+  // Gift
+  bonusFeatures: "Bonus Features",
+  sendGift: "Send A Gift",
+  copy: "Copy",
+  copied: "Copied",
+  // Credits
+  creditsTagline: "A story about love, family, and forever.",
+  directedBy: "Directed by",
+  producedBy: "Produced by",
+  specialThanks: "Special Thanks to",
+  love: "Love",
+  ourFamilies: "Our Families",
+  theEnd: "THE END",
+  thanksWatching: "Thanks for watching. ❤️",
+};
+
+type Key = keyof typeof en;
+
+const id: Record<Key, string> = {
+  whatsYourName: "Siapa namamu?",
+  soWeKnow: "Biar kami tahu siapa yang menonton.",
+  yourNamePlaceholder: "Namamu",
+  continue: "Lanjut",
+  whosWatching: "Siapa yang Menonton?",
+  clickHere: "↓ Klik di sini",
+  volumeHint: "Nyalakan suara untuk pengalaman terbaik",
+  watchingAs: "Menonton sebagai",
+  logout: "Keluar",
+  profileMenu: "Menu profil",
+  welcome: "Selamat datang,",
+  playTrailer: "Putar Trailer",
+  ourStory: "Kisah Kami",
+  muted: "Senyap",
+  soundOn: "Suara Aktif",
+  unmuteTrailer: "Nyalakan suara trailer",
+  muteTrailer: "Matikan suara trailer",
+  trailerSoon: "Trailer segera hadir",
+  episodes: "{n} Episode",
+  theCast: "Para Pemeran",
+  mainCast: "Pemeran Utama",
+  specialAppearances: "Penampilan Spesial",
+  specialAppearance: "Penampilan Spesial",
+  as: "sebagai",
+  castCounter: "PEMERAN {i} / {n}",
+  close: "Tutup",
+  previous: "Sebelumnya",
+  next: "Berikutnya",
+  nextEpisode: "Episode Selanjutnya",
+  theWedding: "Pernikahan",
+  openMaps: "Buka Maps",
+  addToCalendar: "Tambah ke Kalender",
+  nowStreaming: "SEDANG TAYANG",
+  comingSoon: "Segera Hadir",
+  days: "Hari",
+  hours: "Jam",
+  min: "Menit",
+  sec: "Detik",
+  memories: "Kenangan",
+  watchAgain: "Tonton Lagi",
+  scrollLeft: "Geser kiri",
+  scrollRight: "Geser kanan",
+  areYouWatching: "Kamu Ikut Menonton?",
+  rsvpIntro: "Kami ingin kamu hadir di hari spesial ini.",
+  rsvpAs: "RSVP sebagai",
+  optYes: "YA, SAYA AKAN HADIR",
+  optMaybe: "MUNGKIN",
+  optNo: "MAAF, SAYA TIDAK BISA HADIR",
+  numberOfGuests: "Jumlah tamu",
+  confirmRsvp: "Konfirmasi RSVP",
+  sending: "Mengirim...",
+  onTheList: "Kamu sudah terdaftar",
+  rsvpThanks: "Terima kasih, {name}. Sampai jumpa di premiere!",
+  confirmedGuests: "Tamu Terkonfirmasi",
+  peopleWillBeThere: "orang akan hadir",
+  whatPeopleSay: "Kata Mereka",
+  reviewsIntro: "Ulasan dari orang-orang terdekat kami.",
+  yourName: "Nama kamu",
+  needRsvpNote: "Konfirmasi RSVP dulu, lalu kembali untuk mengirim pesan. Teksmu tetap tersimpan di sini.",
+  notedWithRsvp: "Pesan ini akan dicatat bersama RSVP-mu:",
+  wishesPlaceholder: "Tulis ucapan dan doa...",
+  postMessage: "Kirim Pesan",
+  posting: "Mengirim...",
+  thanksReview: "Terima kasih atas pesannya!",
+  messages: "Pesan ({n})",
+  refresh: "↻ Muat Ulang",
+  loading: "Memuat...",
+  attending: "Hadir",
+  maybe: "Mungkin",
+  cantAttend: "Tidak Hadir",
+  toastTitle: "Isi RSVP dulu",
+  toastBody: "Pesan bisa dikirim setelah konfirmasi kehadiran.",
+  dismiss: "Tutup",
+  dateLocale: "id-ID",
+  whereToWatch: "Lokasi Acara",
+  venueMap: "Peta lokasi",
+  bonusFeatures: "Bonus",
+  sendGift: "Kirim Hadiah",
+  copy: "Salin",
+  copied: "Tersalin",
+  creditsTagline: "Kisah tentang cinta, keluarga, dan selamanya.",
+  directedBy: "Disutradarai oleh",
+  producedBy: "Diproduksi oleh",
+  specialThanks: "Terima kasih khusus untuk",
+  love: "Cinta",
+  ourFamilies: "Keluarga Kami",
+  theEnd: "TAMAT",
+  thanksWatching: "Terima kasih sudah menonton. ❤️",
+};
+
+const dict = { en, id };
+
+// Indonesian version of weddingConfig: same data, translated copy swapped in.
+const idConfig: typeof weddingConfig = {
+  ...weddingConfig,
+  trailerTitle: contentId.trailerTitle,
+  trailerLogline: contentId.trailerLogline,
+  heroMeta: contentId.heroMeta,
+  heroTagline: contentId.heroTagline,
+  heroLogline: contentId.heroLogline,
+  giftNote: contentId.giftNote,
+  reception: { ...weddingConfig.reception, ...contentId.reception },
+  episodes: weddingConfig.episodes.map((e, i) => ({ ...e, ...contentId.episodes[i] })),
+  mainCast: {
+    bride: { ...weddingConfig.mainCast.bride, role: contentId.roles.bride },
+    groom: { ...weddingConfig.mainCast.groom, role: contentId.roles.groom },
+  },
+  giftAccounts: weddingConfig.giftAccounts.map((a, i) => ({ ...a, owner: contentId.giftOwners[i] ?? a.owner })),
+};
+
+export const LangContext = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({
+  lang: "en",
+  setLang: () => {},
+});
+
+/** t(): UI strings, c: wedding content in the current language, cat(): gallery category label. */
+export function useI18n() {
+  const { lang, setLang } = useContext(LangContext);
+  const t = (key: Key, vars?: Record<string, string | number>) =>
+    dict[lang][key].replace(/\{(\w+)\}/g, (_, k) => String(vars?.[k] ?? ""));
+  const cat = (name: string) => (lang === "id" ? contentId.categories[name] ?? name : name);
+  return { lang, setLang, t, cat, c: lang === "id" ? idConfig : weddingConfig };
+}

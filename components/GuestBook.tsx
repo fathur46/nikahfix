@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Review } from "@/lib/content";
+import { useI18n } from "@/lib/i18n";
 
 type Rsvp = { status: "yes" | "maybe" | "no"; name: string };
 
@@ -17,6 +18,7 @@ export default function GuestBook({
   rsvp: Rsvp | null;
   onRsvpRenamed: (name: string) => void;
 }) {
+  const { t } = useI18n();
   const attendance = rsvp?.status ?? null;
   // Sourced entirely from data/guestbook.json (real guest submissions) — no
   // hardcoded placeholder messages.
@@ -101,12 +103,12 @@ export default function GuestBook({
 
   return (
     <section id="reviews" className="w-full bg-black px-5 py-14">
-      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">What People Are Saying</h2>
-      <p className="mb-6 text-sm text-nk-mist">Reviews from the people who know us best.</p>
+      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">{t("whatPeopleSay")}</h2>
+      <p className="mb-6 text-sm text-nk-mist">{t("reviewsIntro")}</p>
 
       <form onSubmit={handleSubmit} className="mb-8 rounded-lg bg-nk-panel p-4">
         <label className="mb-1 block text-xs text-nk-mist" htmlFor="guestbook-name">
-          Your name
+          {t("yourName")}
         </label>
         <input
           id="guestbook-name"
@@ -117,12 +119,12 @@ export default function GuestBook({
         />
         {!attendance && needRsvp && (
           <p className="mb-3 rounded bg-nk-red/15 px-3 py-2 text-xs text-white">
-            Please confirm your RSVP first, then come back and post your message. Your text is saved here.
+            {t("needRsvpNote")}
           </p>
         )}
         {attendance && (
           <p className="mb-3 text-xs text-nk-mist">
-            This message will be noted with your RSVP: <AttendanceBadge status={attendance} />
+            {t("notedWithRsvp")} <AttendanceBadge status={attendance} />
           </p>
         )}
         <div className="mb-3 flex gap-1">
@@ -137,7 +139,7 @@ export default function GuestBook({
           onChange={(e) => setMessage(e.target.value)}
           maxLength={280}
           rows={3}
-          placeholder="Share your wishes..."
+          placeholder={t("wishesPlaceholder")}
           className="mb-3 w-full resize-none rounded border border-white/10 bg-black/40 px-3 py-2 text-sm text-white placeholder-white/30 outline-none focus:border-nk-red"
         />
         <button
@@ -145,20 +147,20 @@ export default function GuestBook({
           disabled={submitting || !message.trim()}
           className="w-full rounded bg-nk-red py-2.5 text-sm font-bold text-white disabled:opacity-30 active:scale-[0.98] transition-transform"
         >
-          {submitting ? "Posting..." : "Post Message"}
+          {submitting ? t("posting") : t("postMessage")}
         </button>
-        {posted && <p className="mt-2 text-center text-xs text-nk-mist">Thanks for the review!</p>}
+        {posted && <p className="mt-2 text-center text-xs text-nk-mist">{t("thanksReview")}</p>}
       </form>
 
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-sm font-semibold text-white">Messages ({reviews.length})</p>
+        <p className="text-sm font-semibold text-white">{t("messages", { n: reviews.length })}</p>
         <button
           type="button"
           onClick={load}
           disabled={refreshing}
           className="rounded bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/80 disabled:opacity-50 active:bg-white/20"
         >
-          {refreshing ? "Loading..." : "↻ Refresh"}
+          {refreshing ? t("loading") : t("refresh")}
         </button>
       </div>
 
@@ -182,7 +184,7 @@ export default function GuestBook({
             <p className="text-sm text-white/80">{r.message}</p>
             {r.submittedAt && (
               <p className="mt-2 text-[11px] text-white/40">
-                {new Date(r.submittedAt).toLocaleString("id-ID", {
+                {new Date(r.submittedAt).toLocaleString(t("dateLocale"), {
                   day: "numeric",
                   month: "short",
                   year: "numeric",
@@ -209,14 +211,14 @@ export default function GuestBook({
               !
             </span>
             <div className="flex-1">
-              <p className="text-sm font-bold text-white">Isi RSVP dulu</p>
+              <p className="text-sm font-bold text-white">{t("toastTitle")}</p>
               <p className="mt-0.5 text-xs text-nk-mist">
-                Pesan bisa dikirim setelah konfirmasi kehadiran.
+                {t("toastBody")}
               </p>
             </div>
             <button
               type="button"
-              aria-label="Dismiss"
+              aria-label={t("dismiss")}
               onClick={() => setToast(false)}
               className="text-xl leading-none text-white/50 active:text-white"
             >
@@ -230,13 +232,14 @@ export default function GuestBook({
 }
 
 function AttendanceBadge({ status }: { status: "yes" | "maybe" | "no" }) {
+  const { t } = useI18n();
   const style =
     status === "yes"
       ? "bg-nk-red/20 text-nk-red"
       : status === "maybe"
         ? "bg-white/10 text-white/60"
         : "bg-white/5 text-white/40";
-  const label = status === "yes" ? "Attending" : status === "maybe" ? "Maybe" : "Can't Attend";
+  const label = status === "yes" ? t("attending") : status === "maybe" ? t("maybe") : t("cantAttend");
 
   return (
     <span className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${style}`}>

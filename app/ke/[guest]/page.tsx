@@ -1,0 +1,16 @@
+import type { Metadata } from "next";
+import NikahfixExperience from "@/components/NikahfixExperience";
+import { nameFromSlug } from "@/lib/slug";
+import { guestMetadata } from "@/lib/guestMetadata";
+
+type Params = Promise<{ guest: string }>;
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { guest } = await params;
+  return guestMetadata(guest, "id");
+}
+
+export default async function GuestPageId({ params }: { params: Params }) {
+  const { guest } = await params;
+  return <NikahfixExperience initialName={nameFromSlug(guest)} initialLang="id" />;
+}

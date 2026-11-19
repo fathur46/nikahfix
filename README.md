@@ -91,6 +91,15 @@ All media lives in `public/images/` and `public/videos/`, referenced by path fro
 
 The current repo ships with free stock placeholder photos (Picsum Photos) and a royalty-free sample video/clip so you can see proportions and layout before dropping in real photos — replace them at your own pace, section by section.
 
+## Languages (English / Indonesian)
+
+English is the default. Indonesian is chosen by either:
+
+- the **EN | ID** switch on the first screen (the Who's Watching / What's your name screen), or
+- the link prefix: `/to/<name>` is English, `/ke/<name>` is Indonesian. Switching language on the first screen rewrites the address bar between the two prefixes.
+
+Translations live in two places: the interface text in [`lib/i18n.tsx`](lib/i18n.tsx) (one `en` and one `id` block with the same keys), and the wedding copy that changes per language (hero lines, episodes, roles, gift note, reception label/date) in `contentId` at the bottom of [`lib/content.ts`](lib/content.ts). Names, venue, bank accounts and photos are shared. If you add or reorder episodes or gift accounts, update the matching entries in `contentId` too (they are matched by position).
+
 ## Guest name from URL
 
 `/to/<slug>` (e.g. `/to/budi-santoso`) shows that name on the profile screen and throughout the page (RSVP, guest book, "Welcome, ___"). Visiting `/` with no slug asks the guest to type their name, then updates the URL to their personalized link without reloading the page.

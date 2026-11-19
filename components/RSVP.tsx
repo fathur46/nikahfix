@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useI18n } from "@/lib/i18n";
 
 type Status = "yes" | "maybe" | "no";
 
-const options: { value: Status; label: string }[] = [
-  { value: "yes", label: "YES, I'LL BE THERE" },
-  { value: "maybe", label: "MAYBE" },
-  { value: "no", label: "SORRY, I CAN'T MAKE IT" },
-];
+const options = [
+  { value: "yes", key: "optYes" },
+  { value: "maybe", key: "optMaybe" },
+  { value: "no", key: "optNo" },
+] as const;
 
 export default function RSVP({
   guestName,
@@ -17,6 +18,7 @@ export default function RSVP({
   guestName: string;
   onStatusChange?: (status: Status) => void;
 }) {
+  const { t } = useI18n();
   const [status, setStatus] = useState<Status | null>(null);
   const [guestCount, setGuestCount] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -56,9 +58,9 @@ export default function RSVP({
 
   const headcount = confirmedCount !== null && confirmedCount > 0 && (
     <div className="mb-6 rounded-md bg-nk-panel px-4 py-3">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-nk-red">Confirmed Guests</p>
+      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-nk-red">{t("confirmedGuests")}</p>
       <p className="font-display text-2xl text-white">
-        {confirmedCount} <span className="font-body text-sm font-normal normal-case text-nk-mist">people will be there</span>
+        {confirmedCount} <span className="font-body text-sm font-normal normal-case text-nk-mist">{t("peopleWillBeThere")}</span>
       </p>
     </div>
   );
@@ -70,8 +72,8 @@ export default function RSVP({
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-nk-red">
             <CheckIcon />
           </div>
-          <h2 className="mb-2 font-display text-2xl text-white">You&apos;re on the list</h2>
-          <p className="mb-6 text-sm text-nk-mist">Thanks, {guestName}. We&apos;ll see you at the premiere.</p>
+          <h2 className="mb-2 font-display text-2xl text-white">{t("onTheList")}</h2>
+          <p className="mb-6 text-sm text-nk-mist">{t("rsvpThanks", { name: guestName })}</p>
           {headcount}
         </div>
       </section>
@@ -80,13 +82,13 @@ export default function RSVP({
 
   return (
     <section id="rsvp" className="w-full bg-black px-5 py-14">
-      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">Are You Watching?</h2>
-      <p className="mb-6 text-sm text-nk-mist">We&apos;d love to have you with us on this special day.</p>
+      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">{t("areYouWatching")}</h2>
+      <p className="mb-6 text-sm text-nk-mist">{t("rsvpIntro")}</p>
 
       {headcount}
 
       <p className="mb-4 text-sm text-white/70">
-        RSVP as <span className="font-semibold text-white">{guestName}</span>
+        {t("rsvpAs")} <span className="font-semibold text-white">{guestName}</span>
       </p>
 
       <div className="mb-5 flex flex-col gap-2">
@@ -100,14 +102,14 @@ export default function RSVP({
                 : "border-white/10 bg-nk-panel text-white/80"
             }`}
           >
-            {opt.label}
+            {t(opt.key)}
           </button>
         ))}
       </div>
 
       {status === "yes" && (
         <div className="mb-6 flex items-center justify-between rounded-md bg-nk-panel px-4 py-3">
-          <span className="text-sm text-white/80">Number of guests</span>
+          <span className="text-sm text-white/80">{t("numberOfGuests")}</span>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setGuestCount((c) => Math.max(1, c - 1))}
@@ -133,7 +135,7 @@ export default function RSVP({
         disabled={!status || submitting}
         className="w-full rounded bg-nk-red py-3 text-sm font-bold tracking-wide text-white disabled:opacity-30 active:scale-[0.98] transition-transform"
       >
-        {submitting ? "Sending..." : "Confirm RSVP"}
+        {submitting ? t("sending") : t("confirmRsvp")}
       </button>
     </section>
   );

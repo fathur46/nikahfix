@@ -156,3 +156,49 @@ export const weddingConfig = {
 };
 
 export type WeddingConfig = typeof weddingConfig;
+
+// Indonesian copy, used when the guest picks ID (or opens a /ke/... link).
+// Anything not listed here (names, venue, bank accounts, photos) is shared.
+export const contentId = {
+  trailerTitle: "Kisah Kami",
+  trailerLogline: "Trailer resmi kisah kami.",
+  heroMeta: "2026 • Romantis • Pernikahan • Kisah Nyata",
+  heroTagline: "Dua insan. Satu cerita. Seumur hidup untuk dijalani.",
+  heroLogline:
+    "Dari pertemuan tak terduga hingga selamanya — saksikan bagaimana semuanya bermula, dan ke mana cerita ini melangkah.",
+  giftNote: "Kehadiranmu adalah hadiah terbaik. Jika ingin memberi lebih, berikut informasinya.",
+  reception: { label: "RESEPSI", date: "Jumat, 27 November 2026" },
+  // Same order as weddingConfig.episodes
+  episodes: [
+    {
+      title: "Pertemuan Pertama",
+      subtitle: "Episode Perdana",
+      description: "Ruangan yang ramai, perkenalan tak disengaja, dan obrolan yang tak ingin mereka akhiri.",
+    },
+    {
+      title: "Perjalanan",
+      subtitle: "Musim Pertama",
+      description: "Telepon panjang, jarak yang lebih jauh, dan pelan-pelan sadar bahwa ini sungguhan.",
+    },
+    {
+      title: "Lamaran",
+      subtitle: "Final Musim",
+      description: "Satu lutut, satu pertanyaan, satu 'iya' yang gemetar.",
+    },
+    {
+      title: "Selamanya",
+      subtitle: "Segera Hadir",
+      description: "Pernikahan. Awal dari cerita tanpa akhir — hanya bab berikutnya.",
+    },
+  ],
+  roles: { bride: "Mempelai Wanita", groom: "Mempelai Pria" },
+  // Same order as weddingConfig.giftAccounts
+  giftOwners: ["Mempelai Pria", "Mempelai Wanita"],
+  // Gallery category labels (English label -> Indonesian)
+  categories: {
+    "Our Journey": "Perjalanan Kami",
+    "Pre-Wedding": "Pra-Wedding",
+    Family: "Keluarga",
+    Friends: "Teman",
+  } as Record<string, string>,
+};

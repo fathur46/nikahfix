@@ -1,20 +1,22 @@
 "use client";
 
 import { weddingConfig } from "@/lib/content";
-
-const roles: { role: string; value: string; href?: string }[] = [
-  { role: "Directed by", value: "Love" },
-  { role: "Produced by", value: "Our Families" },
-  { role: "Special Thanks to", value: "FTR", href: "https://iniftr.web.id" },
-];
+import { useI18n } from "@/lib/i18n";
 
 export default function Credits() {
+  const { t } = useI18n();
+  const roles: { role: string; value: string; href?: string }[] = [
+    { role: t("directedBy"), value: t("love") },
+    { role: t("producedBy"), value: t("ourFamilies") },
+    { role: t("specialThanks"), value: "FTR", href: "https://iniftr.web.id" },
+  ];
+
   return (
     <section id="credits" className="w-full bg-black px-5 py-20 text-center">
       <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-nk-red">{weddingConfig.tag}</p>
       <h2 className="mb-2 font-display text-3xl tracking-wide text-white">{weddingConfig.coupleTitle}</h2>
       <p className="mx-auto mb-10 max-w-xs text-sm italic text-nk-mist">
-        A story about love, family, and forever.
+        {t("creditsTagline")}
       </p>
 
       <div className="mx-auto mb-10 flex max-w-xs flex-col gap-4">
@@ -37,8 +39,8 @@ export default function Credits() {
         ))}
       </div>
 
-      <p className="mb-2 font-display text-4xl tracking-widest text-white/90">THE END</p>
-      <p className="text-sm text-nk-mist">Thanks for watching. ❤️</p>
+      <p className="mb-2 font-display text-4xl tracking-widest text-white/90">{t("theEnd")}</p>
+      <p className="text-sm text-nk-mist">{t("thanksWatching")}</p>
     </section>
   );
 }

@@ -3,9 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import MediaFrame from "./MediaFrame";
-import { weddingConfig, type GalleryItem } from "@/lib/content";
+import type { GalleryItem } from "@/lib/content";
+import { useI18n } from "@/lib/i18n";
 
 export default function Memories() {
+  const { t, cat, c: weddingConfig } = useI18n();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const items = weddingConfig.gallery;
 
@@ -27,14 +29,14 @@ export default function Memories() {
   return (
     <section id="memories" className="w-full bg-black py-12">
       <div className="px-5">
-        <h2 className="mb-1 font-display text-3xl tracking-wide text-white">Memories</h2>
-        <p className="mb-6 text-sm text-nk-mist">Watch Again</p>
+        <h2 className="mb-1 font-display text-3xl tracking-wide text-white">{t("memories")}</h2>
+        <p className="mb-6 text-sm text-nk-mist">{t("watchAgain")}</p>
       </div>
 
       <div className="flex flex-col gap-8">
         {categories.map(({ category, items: rowItems }) => (
           <div key={category}>
-            <p className="mb-3 px-5 text-sm font-semibold text-white">{category}</p>
+            <p className="mb-3 px-5 text-sm font-semibold text-white">{cat(category)}</p>
             <ScrollRow>
               {rowItems.map((item) => {
                 const globalIndex = items.findIndex((i) => i.id === item.id);
@@ -107,10 +109,11 @@ function ScrollRow({ children }: { children: ReactNode }) {
 }
 
 function ScrollButton({ side, onClick }: { side: "left" | "right"; onClick: () => void }) {
+  const { t } = useI18n();
   return (
     <button
       type="button"
-      aria-label={side === "left" ? "Scroll left" : "Scroll right"}
+      aria-label={side === "left" ? t("scrollLeft") : t("scrollRight")}
       onClick={onClick}
       className={`absolute ${side === "left" ? "left-2" : "right-2"} top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-2xl leading-none text-white/80 backdrop-blur-sm active:bg-black/60`}
     >
@@ -130,6 +133,7 @@ function Lightbox({
   onClose: () => void;
   onIndexChange: (i: number) => void;
 }) {
+  const { t, cat } = useI18n();
   const item = items[index];
 
   return (
@@ -141,7 +145,7 @@ function Lightbox({
       onClick={onClose}
     >
       <div className="flex items-center justify-between px-4 pb-4 pt-[calc(1rem+var(--inset-top))]">
-        <span className="text-xs uppercase tracking-wider text-white/60">{item.category}</span>
+        <span className="text-xs uppercase tracking-wider text-white/60">{cat(item.category)}</span>
         <button onClick={onClose} className="text-white/80 text-2xl leading-none px-2">
           &times;
         </button>
@@ -160,7 +164,7 @@ function Lightbox({
           <button
             onClick={() => onIndexChange(index - 1)}
             className="absolute left-2 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white"
-            aria-label="Previous"
+            aria-label={t("previous")}
           >
             &#8249;
           </button>
@@ -169,7 +173,7 @@ function Lightbox({
           <button
             onClick={() => onIndexChange(index + 1)}
             className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white"
-            aria-label="Next"
+            aria-label={t("next")}
           >
             &#8250;
           </button>

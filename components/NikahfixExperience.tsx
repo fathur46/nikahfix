@@ -16,13 +16,15 @@ import Location from "./Location";
 import GiftSection from "./GiftSection";
 import Credits from "./Credits";
 import { slugifyName } from "@/lib/slug";
+import { LangContext, useI18n, type Lang } from "@/lib/i18n";
 
 type Phase = "gate" | "intro" | "app";
 
 type AttendanceStatus = "yes" | "maybe" | "no";
 type Rsvp = { status: AttendanceStatus; name: string };
 
-export default function NikahfixExperience({ initialName }: { initialName?: string }) {
+function Experience({ initialName }: { initialName?: string }) {
+  const { lang } = useI18n();
   const [phase, setPhase] = useState<Phase>("gate");
   const [guestName, setGuestName] = useState<string | null>(initialName ?? null);
   // The guest's RSVP (status + the name it was filed under). A Guest Book
@@ -58,7 +60,7 @@ export default function NikahfixExperience({ initialName }: { initialName?: stri
         // route change — a real Next.js navigation would remount this page
         // and drop us back at the profile-select screen.
         const slug = slugifyName(name);
-        if (slug) window.history.replaceState(null, "", `/to/${slug}`);
+        if (slug) window.history.replaceState(null, "", `/${lang === "id" ? "ke" : "to"}/${slug}`);
       }
       // Played synchronously inside this click-triggered callback so the
       // browser's autoplay policy treats it as a direct result of the
@@ -68,7 +70,7 @@ export default function NikahfixExperience({ initialName }: { initialName?: stri
       sound.play().catch(() => {});
       setPhase("intro");
     },
-    [initialName]
+    [initialName, lang]
   );
 
   if (phase === "gate") {
@@ -103,5 +105,33 @@ export default function NikahfixExperience({ initialName }: { initialName?: stri
       <GiftSection />
       <Credits />
     </main>
+  );
+}
+
+export default function NikahfixExperience({
+  initialName,
+  initialLang = "en",
+}: {
+  initialName?: string;
+  initialLang?: Lang;
+}) {
+  const [lang, setLangState] = useState<Lang>(initialLang);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  // Keep the address bar in step with the language: /to/... is English, /ke/... is Indonesian.
+  const setLang = useCallback((l: Lang) => {
+    setLangState(l);
+    const path = window.location.pathname;
+    const next = path.replace(/^\/(to|ke)\//, `/${l === "id" ? "ke" : "to"}/`);
+    if (next !== path) window.history.replaceState(null, "", next);
+  }, []);
+
+  return (
+    <LangContext.Provider value={{ lang, setLang }}>
+      <Experience initialName={initialName} />
+    </LangContext.Provider>
   );
 }

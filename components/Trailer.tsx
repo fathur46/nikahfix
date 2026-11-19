@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "@/lib/hooks";
 import MediaFrame from "./MediaFrame";
-import { weddingConfig } from "@/lib/content";
+import { useI18n } from "@/lib/i18n";
 
 export default function Trailer() {
+  const { t, c: weddingConfig } = useI18n();
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.5 });
   const videoRef = useRef<HTMLVideoElement>(null);
   const [errored, setErrored] = useState(false);
@@ -44,7 +45,7 @@ export default function Trailer() {
             type="button"
             onClick={() => setMuted((m) => !m)}
             className="block h-full w-full"
-            aria-label={muted ? "Unmute trailer" : "Mute trailer"}
+            aria-label={muted ? t("unmuteTrailer") : t("muteTrailer")}
           >
             <video
               ref={videoRef}
@@ -62,7 +63,7 @@ export default function Trailer() {
           <MediaFrame
             src={weddingConfig.trailerPoster}
             alt={weddingConfig.trailerTitle}
-            label="Trailer coming soon"
+            label={t("trailerSoon")}
             className="h-full w-full"
             imgClassName="h-full w-full object-cover"
           />
@@ -76,11 +77,11 @@ export default function Trailer() {
           >
             {muted ? (
               <>
-                <SpeakerMutedIcon /> Muted
+                <SpeakerMutedIcon /> {t("muted")}
               </>
             ) : (
               <>
-                <SpeakerIcon /> Sound On
+                <SpeakerIcon /> {t("soundOn")}
               </>
             )}
           </button>

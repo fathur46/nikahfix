@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import MediaFrame from "./MediaFrame";
 import { weddingConfig } from "@/lib/content";
+import { useI18n } from "@/lib/i18n";
 
 export default function TopNav({ guestName }: { guestName: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { t, lang, setLang } = useI18n();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -29,10 +31,24 @@ export default function TopNav({ guestName }: { guestName: string }) {
       >
         {weddingConfig.brand}
       </motion.span>
+      <div className="flex items-center gap-3">
+        <div className="flex overflow-hidden rounded border border-white/25 text-[11px] font-semibold">
+          {(["en", "id"] as const).map((l) => (
+            <button
+              key={l}
+              type="button"
+              onClick={() => setLang(l)}
+              aria-pressed={lang === l}
+              className={`px-2 py-1 transition-colors ${lang === l ? "bg-white text-black" : "text-white/70"}`}
+            >
+              {l.toUpperCase()}
+            </button>
+          ))}
+        </div>
       <button
         type="button"
         onClick={() => setMenuOpen((o) => !o)}
-        aria-label="Profile menu"
+        aria-label={t("profileMenu")}
         aria-expanded={menuOpen}
         className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/15 active:scale-95 transition-transform"
       >
@@ -44,6 +60,7 @@ export default function TopNav({ guestName }: { guestName: string }) {
           imgClassName="h-full w-full object-cover"
         />
       </button>
+      </div>
 
       {menuOpen && (
         <>
@@ -54,7 +71,7 @@ export default function TopNav({ guestName }: { guestName: string }) {
             className="fixed inset-0 -z-10 cursor-default"
           />
           <div className="absolute right-4 top-full w-52 rounded-lg border border-white/10 bg-nk-panel p-3 shadow-xl shadow-black/60">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-nk-mist">Watching as</p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-nk-mist">{t("watchingAs")}</p>
             <p className="mb-3 truncate font-display text-xl text-white">{guestName}</p>
             {/* Reload the personalized /to/<name> URL: back to the profile screen with the name kept (also stops trailer audio). */}
             <button
@@ -62,7 +79,7 @@ export default function TopNav({ guestName }: { guestName: string }) {
               onClick={() => window.location.reload()}
               className="w-full rounded bg-nk-red py-2 text-sm font-bold text-white active:scale-[0.98] transition-transform"
             >
-              Logout
+              {t("logout")}
             </button>
           </div>
         </>

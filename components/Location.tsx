@@ -1,8 +1,9 @@
 "use client";
 
-import { weddingConfig } from "@/lib/content";
+import { useI18n } from "@/lib/i18n";
 
 export default function Location() {
+  const { t, c: weddingConfig } = useI18n();
   const venue = weddingConfig.reception;
   const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(
     `${venue.venueName}, ${venue.venueAddress}`
@@ -10,7 +11,7 @@ export default function Location() {
 
   return (
     <section id="location" className="w-full bg-black px-5 py-14">
-      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">Where to Watch</h2>
+      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">{t("whereToWatch")}</h2>
       <p className="mb-6 text-sm text-nk-mist">
         {venue.date} &middot; {venue.time}
       </p>
@@ -22,7 +23,7 @@ export default function Location() {
           referrerPolicy="no-referrer-when-downgrade"
           className="h-48 w-full"
           style={{ filter: "invert(0.9) hue-rotate(180deg) contrast(0.9) brightness(0.9)" }}
-          title="Venue map"
+          title={t("venueMap")}
         />
       </div>
 
@@ -35,7 +36,7 @@ export default function Location() {
         rel="noopener noreferrer"
         className="block w-full rounded bg-nk-red py-3 text-center text-sm font-bold tracking-wide text-white active:scale-[0.98] transition-transform"
       >
-        Open Maps
+        {t("openMaps")}
       </a>
     </section>
   );

@@ -3,17 +3,19 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import MediaFrame from "./MediaFrame";
-import { weddingConfig, type CastMember } from "@/lib/content";
+import type { CastMember } from "@/lib/content";
+import { useI18n } from "@/lib/i18n";
 
 export default function Cast() {
+  const { t, c: weddingConfig } = useI18n();
   const { bride, groom } = weddingConfig.mainCast;
   const allCast: CastMember[] = [bride, groom, ...weddingConfig.specialAppearances];
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
     <section id="cast" className="w-full bg-black px-5 py-12">
-      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">The Cast</h2>
-      <p className="mb-6 text-sm text-nk-mist">Main Cast</p>
+      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">{t("theCast")}</h2>
+      <p className="mb-6 text-sm text-nk-mist">{t("mainCast")}</p>
 
       <div className="grid grid-cols-2 gap-4">
         {[bride, groom].map((person, i) => (
@@ -47,7 +49,7 @@ export default function Cast() {
 
       {weddingConfig.specialAppearances.length > 0 && (
         <div className="mt-8">
-          <p className="mb-3 text-sm font-semibold text-white">Special Appearances</p>
+          <p className="mb-3 text-sm font-semibold text-white">{t("specialAppearances")}</p>
           <div className="edge-fade -mx-5 flex gap-4 overflow-x-auto px-5 hide-scrollbar">
             {weddingConfig.specialAppearances.map((person, i) => (
               <button
@@ -103,6 +105,7 @@ function CastLightbox({
   onClose: () => void;
   onIndexChange: (i: number) => void;
 }) {
+  const { t } = useI18n();
   const person = cast[index];
 
   return (
@@ -116,7 +119,7 @@ function CastLightbox({
       <button
         onClick={onClose}
         className="absolute right-4 top-[calc(1rem+var(--inset-top))] z-10 px-2 text-2xl leading-none text-white/80"
-        aria-label="Close"
+        aria-label={t("close")}
       >
         &times;
       </button>
@@ -133,11 +136,11 @@ function CastLightbox({
 
         <div className="absolute inset-x-0 bottom-0 px-6 pb-8">
           <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-nk-red">
-            {index < 2 ? "Main Cast" : "Special Appearance"}
+            {index < 2 ? t("mainCast") : t("specialAppearance")}
           </p>
           <h3 className="font-display text-4xl text-white">{person.name}</h3>
           {person.fullName && <p className="mt-1 text-sm text-white/60">{person.fullName}</p>}
-          <p className="mt-1 text-sm text-white/70">as {person.role}</p>
+          <p className="mt-1 text-sm text-white/70">{t("as")} {person.role}</p>
         </div>
 
         {index > 0 && (
@@ -147,7 +150,7 @@ function CastLightbox({
               onIndexChange(index - 1);
             }}
             className="absolute left-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white"
-            aria-label="Previous"
+            aria-label={t("previous")}
           >
             &#8249;
           </button>
@@ -159,7 +162,7 @@ function CastLightbox({
               onIndexChange(index + 1);
             }}
             className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white"
-            aria-label="Next"
+            aria-label={t("next")}
           >
             &#8250;
           </button>
@@ -167,7 +170,7 @@ function CastLightbox({
       </div>
 
       <p className="pb-[calc(1.5rem+var(--inset-bottom))] pt-3 text-center text-xs text-white/40">
-        CAST {index + 1} / {cast.length}
+        {t("castCounter", { i: index + 1, n: cast.length })}
       </p>
     </motion.div>
   );

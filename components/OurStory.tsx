@@ -2,13 +2,14 @@
 
 import { motion } from "framer-motion";
 import MediaFrame from "./MediaFrame";
-import { weddingConfig } from "@/lib/content";
+import { useI18n } from "@/lib/i18n";
 
 export default function OurStory() {
+  const { t, c: weddingConfig } = useI18n();
   return (
     <section id="story" className="w-full bg-black px-5 py-12">
-      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">Our Story</h2>
-      <p className="mb-6 text-sm text-nk-mist">{weddingConfig.episodes.length} Episodes</p>
+      <h2 className="mb-1 font-display text-3xl tracking-wide text-white">{t("ourStory")}</h2>
+      <p className="mb-6 text-sm text-nk-mist">{t("episodes", { n: weddingConfig.episodes.length })}</p>
 
       <div className="flex flex-col gap-6">
         {weddingConfig.episodes.map((ep, i) => (

@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { weddingConfig, type GiftAccount } from "@/lib/content";
+import type { GiftAccount } from "@/lib/content";
+import { useI18n } from "@/lib/i18n";
 
 export default function GiftSection() {
+  const { t, c: weddingConfig } = useI18n();
   if (weddingConfig.giftAccounts.length === 0) return null;
 
   return (
@@ -15,8 +17,8 @@ export default function GiftSection() {
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.5 }}
       >
-        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-nk-red">Bonus Features</p>
-        <h2 className="mb-2 font-display text-3xl tracking-wide text-white">Send A Gift</h2>
+        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-nk-red">{t("bonusFeatures")}</p>
+        <h2 className="mb-2 font-display text-3xl tracking-wide text-white">{t("sendGift")}</h2>
         <p className="mb-6 max-w-sm text-sm text-nk-mist">{weddingConfig.giftNote}</p>
 
         <div className="flex flex-col gap-4">
@@ -30,6 +32,7 @@ export default function GiftSection() {
 }
 
 function AccountCard({ account }: { account: GiftAccount }) {
+  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -56,7 +59,7 @@ function AccountCard({ account }: { account: GiftAccount }) {
             copied ? "bg-nk-red text-white" : "bg-white/10 text-white/80 active:bg-white/20"
           }`}
         >
-          {copied ? "Copied" : "Copy"}
+          {copied ? t("copied") : t("copy")}
         </button>
       </div>
     </div>
